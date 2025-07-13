@@ -17,9 +17,15 @@ router.post('/', async (req, res) => {
 router.get('/', async (req, res) => {
   try {
     const articles = await Articles.find().sort();
-    res.json(articles);
+    res.json({
+      message: 'Articles fetched successfully',
+      data: articles
+    });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({
+      message: 'Failed to fetch articles',
+      error: err.message
+    });
   }
 });
 

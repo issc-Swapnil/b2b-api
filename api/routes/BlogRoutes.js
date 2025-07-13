@@ -17,22 +17,39 @@ router.post('/', async (req, res) => {
 router.get('/', async (req, res) => {
   try {
     const blogs = await Blog.find({ published: true }).sort({ publishedAt: -1 });
-    res.json(blogs);
+    res.json({
+      message: 'Published blogs fetched successfully',
+      data: blogs
+    });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({
+      message: 'Failed to fetch published blogs',
+      error: err.message
+    });
   }
 });
+
 
 router.get('/:id', async (req, res) => {
   try {
     const blog = await Blog.findById(req.params.id);
     if (!blog) {
-      return res.status(404).json({ error: 'Blog not found' });
+      return res.status(404).json({
+        message: 'Blog not found',
+        data: null
+      });
     }
-    res.json(blog);
+    res.json({
+      message: 'Blog fetched successfully',
+      data: blog
+    });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({
+      message: 'Failed to fetch blog',
+      error: err.message
+    });
   }
 });
+
 
 module.exports = router;

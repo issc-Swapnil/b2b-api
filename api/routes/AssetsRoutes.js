@@ -17,7 +17,27 @@ router.post('/', async (req, res) => {
 router.get('/', async (req, res) => {
   try {
     const assets = await Assets.find().sort();
-    res.json(assets);
+    res.json({
+      message: 'Assets fetched successfully',
+      data: assets
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: 'Failed to fetch assets',
+      error: err.message
+    });
+  }
+});
+
+
+// Get Article by ID
+router.get('/:id', async (req, res) => {
+  try {
+    const asset = await Assets.findById(req.params.id);
+    if (!asset) {
+      return res.status(404).json({ error: 'Asset not found' });
+    }
+    res.json(asset);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
