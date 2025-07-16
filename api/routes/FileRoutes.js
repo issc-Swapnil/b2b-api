@@ -1,44 +1,59 @@
 const express = require('express');
-const multer = require('multer');
-const AWS = require('aws-sdk');
-const multerS3 = require('multer-s3');
 const router = express.Router();
-require('dotenv').config();
+const multer = require('multer');
+const aws = require('aws-sdk');
+const multerS3 = require('multer-s3');
 
-// Configure AWS
-AWS.config.update({
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  region: process.env.AWS_REGION,
+
+// Declare AWS Credentials below
+const s3 = new aws.S3({
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    region: 'us-east-1'
 });
+// Start Image Upload image
+const imageUploader = multer({
+    storage: multerS3({
+         s3: s3,
+         bucket: process.env.AWS_BUCKET_NAME,
+         acl: 'public-read',
+         ContentDisposition: 'inline',
+         key: function (req, file, cb) {
+               const fileName = Date.now().toString() + '-' + file.originalname;
+               const folder = 'b2b-images/';
+               cb(null, folder + fileName); // S3 key will be: images/123456-myimage.jpg
+          },
+    }),
+    limits: { fileSize: 10000000 }, // In bytes: 10000000 bytes = 10 MB
+}).single('image');
 
-const s3 = new AWS.S3();
+router.post('/', (req, res) => {
+    imageUploader(req, res, async (error) => {
+        if (error) {
+            console.log('errors', error);
+            res.json({ error: error });
+       } else {
+            // If File not found gives msg
+            if (req.file === undefined) {
+                 console.log('Error: No File Selected!');
+                 res.status(201).json('Error: No File Selected');
+            } else {
+                 // If Success
+                 const imageLocation = req.file.location;// Save the file name into database into profile modelres.json
+               try {
+                     res.status(200).json({ 
+                        "message":"Image Upload Successfully",
+                        "imageUrl":imageLocation 
+                    }) 
+               } catch (error) {
+                    console.log(error);
+                    res.status(500).json({
+                         message: error
+                    })
+               }
+            }
+       }
+    })
+ }); 
 
-// Configure multer to use S3
-const upload = multer({
-  storage: multerS3({
-    s3: s3,
-    bucket: process.env.AWS_BUCKET_NAME,
-    acl: 'public-read', // Makes uploaded file public
-    metadata: (req, file, cb) => {
-      cb(null, { fieldName: file.fieldname });
-    },
-    key: (req, file, cb) => {
-      const fileName = Date.now().toString() + '-' + file.originalname;
-      const folder = 'b2b-images/';
-      cb(null, folder + fileName); // S3 key will be: images/123456-myimage.jpg
-    },
-  }),
-});
-router.post('/', upload.single('image'), (req, res) => {
-  if (!req.file) {
-    return res.status(400).json({ error: 'Image not provided' });
-  }
-
-  return res.status(200).json({
-    message: 'Image uploaded successfully',
-    imageUrl: req.file.location,
-  });
-});
-
-module.exports = router;
+ module.exports = router;
