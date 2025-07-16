@@ -7,6 +7,7 @@ const blogRoutes = require('./api/routes/BlogRoutes');
 const articleRoutes = require('./api/routes/ArticleRoutes')
 const assetsRoutes = require('./api/routes/AssetsRoutes')
 const adsRoutes = require('./api/routes/AdsRoutes')
+const fileRoutes = require('./api/routes/FileRoutes')
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());;
@@ -36,6 +37,8 @@ app.use("/blogs", blogRoutes);
 app.use("/articles", articleRoutes);
 app.use("/assets", assetsRoutes);
 app.use("/ads", adsRoutes);
+app.use("/upload", fileRoutes);
+
 
 app.use((req, res, next) => {
      const error = new Error("Not found");
