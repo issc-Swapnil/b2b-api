@@ -34,6 +34,10 @@ const AssetSchema = new mongoose.Schema({
     type: String,
     required: false // URL/path to main image
   },
+  isExclusive: {
+    type: Boolean,
+    default: false
+  }
 },{ timestamps: true });
 
 module.exports = mongoose.model('Asset', AssetSchema);
