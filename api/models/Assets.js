@@ -34,6 +34,12 @@ const AssetSchema = new mongoose.Schema({
     type: String,
     required: false // URL/path to main image
   },
+  mainImage: {
+        type: String, required: false
+  },
+  assetsUrl: {
+        type: String, required: true
+  },
   isExclusive: {
     type: Boolean,
     default: false

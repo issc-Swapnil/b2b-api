@@ -5,6 +5,9 @@ const ArticleSchema = new mongoose.Schema({
     coverImage: {
         type: String, required: false
     },
+    mainImage: {
+        type: String, required: false
+    },
     title: {
         type: String, required: true
     },

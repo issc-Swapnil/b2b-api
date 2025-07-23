@@ -3,15 +3,9 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 
-const part1 = "0fe12b422";
-const part2 = "fc34a63a8";
-const part3 = "3386e94d";
-const part4 = "434e57";
-
-
 router.get('/b2b-news', async (req, res) => {
   try {
-    const url = `https://newsapi.org/v2/everything?q=B2B%20Lead%20Generation&language=en&pageSize=10&apiKey=${part1 + part2 + part3 + part4}`;
+    const url = `https://newsdata.io/api/1/latest?apikey=${API_KEY}&q=B2B%20Lead%20Generation%2C%20B2B%20Advertising`;
 
     const response = await axios.get(url);
 

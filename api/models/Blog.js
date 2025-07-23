@@ -8,6 +8,9 @@ const BlogSchema = new mongoose.Schema({
   tags: [String],
   category: { type: String },
   coverImage: { type: String },
+  mainImage: {
+        type: String, required: false
+    },
   published: { type: Boolean, default: true },
   publishedAt: { type: Date },
   updatedAt: { type: Date, default: Date.now },
