@@ -11,7 +11,7 @@ router.get('/b2b-news', async (req, res) => {
 
     res.json({
       message: 'News fetched successfully',
-      data: response.data.articles
+      data: response.data.results
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
