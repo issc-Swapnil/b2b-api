@@ -11,6 +11,7 @@ const fileRoutes = require('./api/routes/FileRoutes')
 const newsRoutes = require('./api/routes/NewsRoutes')
 const contactRoutes = require('./api/routes/ContactRoutes')
 const subscriberRoutes = require('./api/routes/SubscriberRoutes')
+const commonRoutes = require('./api/routes/CommonRoutes')
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());;
@@ -44,6 +45,7 @@ app.use("/upload", fileRoutes);
 app.use("/news", newsRoutes);
 app.use("/contact", contactRoutes);
 app.use("/subscriber", subscriberRoutes);
+app.use("/admin",commonRoutes);
 
 
 app.use((req, res, next) => {
