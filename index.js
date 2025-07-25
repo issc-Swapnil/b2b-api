@@ -9,6 +9,8 @@ const assetsRoutes = require('./api/routes/AssetsRoutes')
 const adsRoutes = require('./api/routes/AdsRoutes')
 const fileRoutes = require('./api/routes/FileRoutes')
 const newsRoutes = require('./api/routes/NewsRoutes')
+const contactRoutes = require('./api/routes/ContactRoutes')
+const subscriberRoutes = require('./api/routes/SubscriberRoutes')
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());;
@@ -40,6 +42,8 @@ app.use("/assets", assetsRoutes);
 app.use("/ads", adsRoutes);
 app.use("/upload", fileRoutes);
 app.use("/news", newsRoutes);
+app.use("/contact", contactRoutes);
+app.use("/subscriber", subscriberRoutes);
 
 
 app.use((req, res, next) => {
