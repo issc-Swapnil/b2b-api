@@ -1,6 +1,8 @@
 const express = require('express');
+const AssetForm = require('../models/AssetDownloadForm');
 const Assets = require('../models/Assets');
 const router = express.Router();
+// const verifyToken = require('../middlewear/authMiddleware');
 
 // Create a Assets
 router.post('/', async (req, res) => {
@@ -29,7 +31,6 @@ router.get('/', async (req, res) => {
   }
 });
 
-
 // Get Article by ID
 router.get('/:id', async (req, res) => {
   try {
@@ -40,6 +41,17 @@ router.get('/:id', async (req, res) => {
     res.json(asset);
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+});
+
+// download form data for Assets
+router.post('/download', async (req, res) => {
+  try {
+    const asset_download_req = new AssetForm(req.body);
+    await asset_download_req.save();
+    res.status(201).json(asset);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
   }
 });
 
