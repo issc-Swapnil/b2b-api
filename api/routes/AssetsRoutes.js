@@ -55,4 +55,26 @@ router.post('/download', async (req, res) => {
   }
 });
 
+//delete asset
+router.delete('/:id', async (req, res) => {
+  try {
+    const deletedAsset = await Assets.findByIdAndDelete(req.params.id);
+    if (!deletedAsset) {
+      return res.status(404).json({
+        message: 'Asset not found',
+        data: null
+      });
+    }
+    res.json({
+      message: 'Asset deleted successfully',
+      data: deletedAsset
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: 'Failed to delete asset',
+      error: err.message
+    });
+  }
+});
+
 module.exports = router;
