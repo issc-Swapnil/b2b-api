@@ -49,7 +49,7 @@ router.post('/download', async (req, res) => {
   try {
     const asset_download_req = new AssetForm(req.body);
     await asset_download_req.save();
-    res.status(201).json(asset);
+    res.status(201).json(asset_download_req);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
